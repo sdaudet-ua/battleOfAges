@@ -2,6 +2,9 @@ namespace pa2_sdaudet_ua_1
 {
     public class EarthAttack : IAttack
     {
+        public string ToTypeString(){
+            return "Earth";
+        }
         public void Attack(Character attacker, Character opponent){
             if (opponent.type=="Air/Wind")
             {

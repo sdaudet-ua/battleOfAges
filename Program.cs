@@ -6,6 +6,7 @@ namespace pa2_sdaudet_ua_1
     {
         static void Main(string[] args)
         {
+            int round = 0;
             Console.WriteLine("Welcome to Battle of the Ages!\n\n Let's create your character!");
             Console.Write("Please enter the name of your character: ");
             string playerName = Console.ReadLine();
@@ -18,8 +19,41 @@ namespace pa2_sdaudet_ua_1
             Console.WriteLine("Now that your character has been created, let's check out your opponent!");
             Character computer = new Character();
             computer.DisplayDetails();
-            computer.Attack();
+            Console.WriteLine("Are you ready to begin battle? Press any key to continue!");
+            Console.ReadKey();
+            Battle(player, computer, ref round);
+            player.Attack(computer,round);
 
+        }
+        public static void Battle(Character player, Character computer, ref int round){
+            Console.WriteLine("Welcome to Battle!");
+            bool exit = false;
+            bool playerIsPC = FirstPlayerisComputer();
+            round = 1;
+            while (!exit && player.health > 0 && computer.health > 0){
+                if (!playerIsPC && player.health > 0){
+                    //AttackUI.Gameplay(player, computer);
+                    player.Attack(computer,round);
+                    round++;
+                    playerIsPC = true;
+                }
+                if (playerIsPC && computer.health > 0){
+                    //AttackUI.Gameplay(computer, player);
+                    computer.Attack(player,round);
+                    round++;
+                    playerIsPC = false;
+                }
+            }
+        }
+        private static bool FirstPlayerisComputer(){
+            Random random = new Random();
+            int num = random.Next(10);
+            if (num<=5){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         private static IAttack ParseAttackMethod(int method){
             if (method==1){

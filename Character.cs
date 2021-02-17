@@ -19,24 +19,43 @@ namespace pa2_sdaudet_ua_1
             this.maxPower = PowerSelector();
             this.health = 100;
             this.attackBehavior = RandomType();
-            this.type = attackBehavior.ToString();
+            this.type = attackBehavior.ToTypeString();
             this.attackPower = PowerSelector(maxPower);
+            while (this.attackPower<50){
+                this.attackPower = PowerSelector(maxPower);
+            }
             this.defensePower = PowerSelector(80);
+            while (this.defensePower>50){
+                this.defensePower = PowerSelector(maxPower);
+            }
         }
         public Character(string name, IAttack behavior){
             this.name = name;
             this.maxPower = PowerSelector();
             this.health = 100;
             this.attackBehavior = behavior;
-            this.type = attackBehavior.ToString();
+            this.type = attackBehavior.ToTypeString();
             this.attackPower = PowerSelector(maxPower);
+            while (this.attackPower<50){
+                this.attackPower = PowerSelector(maxPower);
+            }
             this.defensePower = PowerSelector(80);
+            while (this.defensePower>50){
+                this.defensePower = PowerSelector(maxPower);
+            }
         }
-        public void Attack(Character opponent){
-            attackBehavior.Attack(this,opponent);
+        public void Attack(Character opponent, int round){
+            double opponentLastHealth = opponent.health;
+            for (int i=10;i>=0;i--){
+                attackBehavior.Attack(this,opponent);
+                AttackUI.Gameplay(this,opponent,i);
+            }
+            double damageDone = opponentLastHealth-opponent.health;
+            Console.WriteLine($"Round {round} has concluded, here's how it went:\n{this.name} dealt {damageDone} to {opponent.name}. {opponent.name} has {opponent.health}% health remaining, and you have {this.health}% remaining.");
+            Console.ReadKey();
         }
         public void DisplayDetails(){
-            Console.WriteLine("Name: {0}({1})\nHealth: {2}\nAttack Power: {3}\nDefensive Power: {4}%", name,type,health,attackPower,defensePower);
+            Console.WriteLine("Name: {0} ({1})\nHealth: {2}\nAttack Power: {3}\nDefensive Power: {4}%", name,type,health,attackPower,defensePower);
         }
         private double PowerSelector(){
             Random power = new Random();
