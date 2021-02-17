@@ -44,18 +44,20 @@ namespace pa2_sdaudet_ua_1
                 this.defensePower = PowerSelector(maxPower);
             }
         }
-        public void Attack(Character opponent, int round){
+        public void Attack(Character opponent, int round,ref List<string> gameplayLog){
             double opponentLastHealth = opponent.health;
             for (int i=10;i>=0;i--){
                 attackBehavior.Attack(this,opponent);
-                AttackUI.Gameplay(this,opponent,i);
+                AttackUI.Gameplay(this,opponent,i,round);
             }
             double damageDone = opponentLastHealth-opponent.health;
-            Console.WriteLine($"Round {round} has concluded, here's how it went:\n{this.name} dealt {damageDone} to {opponent.name}. {opponent.name} has {opponent.health}% health remaining, and you have {this.health}% remaining.");
+            gameplayLog.Add($"Round {round}:\n{this.name} dealt {damageDone} to {opponent.name}.");
             Console.ReadKey();
         }
         public void DisplayDetails(){
-            Console.WriteLine("Name: {0} ({1})\nHealth: {2}\nAttack Power: {3}\nDefensive Power: {4}%", name,type,health,attackPower,defensePower);
+            Console.WriteLine("Name: {0} ({1})\nHealth: {2}\nAttack Power: {3}\nDefensive Power: {4}%\n\nPress any key to continue!", name,type,health,attackPower,defensePower);
+            Console.ReadKey();
+
         }
         private double PowerSelector(){
             Random power = new Random();

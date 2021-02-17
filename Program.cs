@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 
 namespace pa2_sdaudet_ua_1
 {
@@ -7,45 +8,59 @@ namespace pa2_sdaudet_ua_1
         static void Main(string[] args)
         {
             int round = 0;
-            Console.WriteLine("Welcome to Battle of the Ages!\n\n Let's create your character!");
+            Console.Clear();
+            Console.WriteLine("Welcome to Battle of the Ages!\n\nLet's create your character!");
             Console.Write("Please enter the name of your character: ");
             string playerName = Console.ReadLine();
             Console.WriteLine($"Thanks {playerName}! Now we will choose your player type!\n\nPress 1 for Earth\nPress 2 for Air/Wind\nPress 3 for Fire");
-            string playerType = Console.ReadLine();
-            int attackMethod = Int32.Parse(playerType);
+            int attackMethod = Int32.Parse(Console.ReadLine());
             Character player = new Character(playerName,ParseAttackMethod(attackMethod));
+            Console.Clear();
             Console.WriteLine($"Your character {playerName} has been spawned! Here are your stats: ");
             player.DisplayDetails();
-            Console.WriteLine("Now that your character has been created, let's check out your opponent!");
+            Console.WriteLine("\n\nNow that your character has been created, let's check out your opponent!");
             Character computer = new Character();
             computer.DisplayDetails();
-            Console.WriteLine("Are you ready to begin battle? Press any key to continue!");
+            Console.Clear();
+            Console.WriteLine("\n\nAre you ready to begin battle? Press any key to continue!");
             Console.ReadKey();
             Battle(player, computer, ref round);
-            player.Attack(computer,round);
 
         }
-        public static void Battle(Character player, Character computer, ref int round){
-            Console.WriteLine("Welcome to Battle!");
+        static void Battle(Character player, Character computer, ref int round){
             bool exit = false;
-            bool playerIsPC = FirstPlayerisComputer();
-            round = 1;
-            while (!exit && player.health > 0 && computer.health > 0){
-                if (!playerIsPC && player.health > 0){
-                    //AttackUI.Gameplay(player, computer);
-                    player.Attack(computer,round);
-                    round++;
-                    playerIsPC = true;
+            while(!exit){
+                Character winner = null;
+                Console.WriteLine("Welcome to Battle!");
+                List<string> gameplayLog = new List<string>();
+                bool playerIsPC = FirstPlayerisComputer();
+                round = 1;
+                while (player.health > 0 && computer.health > 0){
+                    if (!playerIsPC && player.health > 0){
+                        player.Attack(computer,round,ref gameplayLog);
+                        round++;
+                        playerIsPC = true;
+                    }
+                    if (playerIsPC && computer.health > 0){
+                        computer.Attack(player,round,ref gameplayLog);
+                        round++;
+                        playerIsPC = false;
+                    }
                 }
-                if (playerIsPC && computer.health > 0){
-                    //AttackUI.Gameplay(computer, player);
-                    computer.Attack(player,round);
-                    round++;
-                    playerIsPC = false;
+                if (player.health<=0){
+                    winner = computer;
+                }
+                else if (computer.health<=0){
+                    winner = player;
+                }
+                Console.Clear();
+                Console.WriteLine($"The battle has finished! {winner.name} won with {winner.health.ToString("P")} health remaining! Here are the results of each round!");
+                foreach (string roundResult in gameplayLog){
+                    Console.WriteLine(roundResult);
                 }
             }
         }
-        private static bool FirstPlayerisComputer(){
+        static bool FirstPlayerisComputer(){
             Random random = new Random();
             int num = random.Next(10);
             if (num<=5){
@@ -55,7 +70,7 @@ namespace pa2_sdaudet_ua_1
                 return false;
             }
         }
-        private static IAttack ParseAttackMethod(int method){
+        static IAttack ParseAttackMethod(int method){
             if (method==1){
                 return new EarthAttack();
             }
@@ -66,6 +81,7 @@ namespace pa2_sdaudet_ua_1
                 return new FireAttack();
             }
             Console.WriteLine("ERROR: Input for character type was not an integer 1,2,or 3.");
+            Console.ReadKey();
             return null;
         }
     }
