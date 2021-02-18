@@ -4,11 +4,11 @@ namespace pa2_sdaudet_ua_1
 {
     public class AttackUI
     {
-        public static void Gameplay(Character attacker, Character opponent, int i,int round){
+        public static void Gameplay(Character player, Character computer,int round){
             Console.Clear();
-            Console.WriteLine($"Round {round} is underway! {attacker.name} is attacking {opponent.name}!");
-            Console.WriteLine($"{attacker.name}'s health: {(attacker.health/100).ToString("P1")}%");
-            Console.WriteLine($"{opponent.name}'s health: {(opponent.health/100).ToString("P1")}%");
+            Console.WriteLine($"Round {round} is underway! {player.name} is attacking {computer.name}!");
+            Console.WriteLine($"{player.name}'s health: {(player.health/100).ToString("P1")}");
+            Console.WriteLine($"{computer.name}'s health: {(computer.health/100).ToString("P1")}");
             Console.Write(@"
 ######                                                                                 #                         
 #     #   ##   ##### ##### #      ######     ####  ######    ##### #    # ######      # #    ####  ######  ####  
@@ -19,7 +19,29 @@ namespace pa2_sdaudet_ua_1
 ######  #    #   #     #   ###### ######     ####  #           #   #    # ######    #     #  ####  ######  ####  
 
 ");
-            System.Threading.Thread.Sleep(200);
+            // System.Threading.Thread.Sleep(200);
         }
+        public static void DisplayWinnerBanner(bool userWon){
+                if (userWon){
+                    Console.Write(@"
+ __   __           __        ___       _ 
+ \ \ / /__  _   _  \ \      / (_)_ __ | |
+  \ V / _ \| | | |  \ \ /\ / /| | '_ \| |
+   | | (_) | |_| |   \ V  V / | | | | |_|
+   |_|\___/ \__,_|    \_/\_/  |_|_| |_(_)
+                                         
+ ");
+                }
+                else if (!userWon){
+                    Console.Write(@"
+ __   __            _                   _ 
+ \ \ / /__  _   _  | |    ___  ___  ___| |
+  \ V / _ \| | | | | |   / _ \/ __|/ _ \ |
+   | | (_) | |_| | | |__| (_) \__ \  __/_|
+   |_|\___/ \__,_| |_____\___/|___/\___(_)
+                                          
+");
+                }
+            }
     }
 }
