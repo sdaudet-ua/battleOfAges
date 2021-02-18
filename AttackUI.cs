@@ -4,9 +4,11 @@ namespace pa2_sdaudet_ua_1
 {
     public class AttackUI
     {
+        //This Class encapsulates the gameplay interface and displays live information about the battle as it is occurring. 
         public static void Gameplay(Character player, Character computer,int round){
             Console.Clear();
-            Console.WriteLine($"Round {round} is underway! {player.name} is attacking {computer.name}!");
+            Console.WriteLine($"Round {round} is underway! {player.name} is battling {computer.name}!");
+            //Show health of both players as game runs. 
             Console.WriteLine($"{player.name}'s health: {(player.health/100).ToString("P1")}");
             Console.WriteLine($"{computer.name}'s health: {(computer.health/100).ToString("P1")}");
             Console.Write(@"
@@ -19,9 +21,8 @@ namespace pa2_sdaudet_ua_1
 ######  #    #   #     #   ###### ######     ####  #           #   #    # ######    #     #  ####  ######  ####  
 
 ");
-            // System.Threading.Thread.Sleep(200);
         }
-        public static void DisplayWinnerBanner(bool userWon){
+        public static void DisplayWinnerBanner(bool userWon){//Displays "You Win" or "You Lose" after the battle finishes. Helps to give interface a more friendly appearance. 
                 if (userWon){
                     Console.Write(@"
  __   __           __        ___       _ 

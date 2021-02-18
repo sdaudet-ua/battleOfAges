@@ -6,7 +6,7 @@ namespace pa2_sdaudet_ua_1
             return "Air/Wind";
         }
         public void Attack(Character attacker, Character opponent){
-            if (opponent.type=="Fire")
+            if (opponent.type=="Fire")//Type bonus
             {
                 opponent.health = opponent.health - ((attacker.attackPower/opponent.defensePower) * 1.2);
             }
